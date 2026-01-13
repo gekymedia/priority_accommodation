@@ -13,6 +13,14 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon/psa_accommodations_16x16.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon/psa_accommodations_32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="48x48" href="{{ asset('favicon/psa_accommodations_48x48.png') }}">
+    <link rel="icon" type="image/png" sizes="64x64" href="{{ asset('favicon/psa_accommodations_64x64.png') }}">
+    <link rel="apple-touch-icon" sizes="192x192" href="{{ asset('mobile/psa_accommodations_192x192.png') }}">
+    <link rel="apple-touch-icon" sizes="512x512" href="{{ asset('mobile/psa_accommodations_512x512.png') }}">
+
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
