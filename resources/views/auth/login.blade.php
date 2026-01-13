@@ -5,6 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Priority Accommodations</title>
     
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="{{ asset('manifest.json') }}">
+    <meta name="theme-color" content="#006b3f">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon/psa_accommodations_16x16.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon/psa_accommodations_32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="48x48" href="{{ asset('favicon/psa_accommodations_48x48.png') }}">
+    <link rel="icon" type="image/png" sizes="64x64" href="{{ asset('favicon/psa_accommodations_64x64.png') }}">
+    <link rel="apple-touch-icon" sizes="192x192" href="{{ asset('mobile/psa_accommodations_192x192.png') }}">
+    <link rel="apple-touch-icon" sizes="512x512" href="{{ asset('mobile/psa_accommodations_512x512.png') }}">
+    
     <!-- Modern Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -564,8 +578,8 @@
                         <i class="fas fa-star"></i>
                         Made for Ghana
                     </span>
-                    <div class="login-logo">
-                        <i class="fas fa-building"></i>
+                    <div class="login-logo" style="background: transparent; box-shadow: none;">
+                        <img src="{{ asset('mobile/psa_accommodations_192x192.png') }}" alt="Priority Accommodations Logo" style="width: 100%; height: 100%; object-fit: contain; border-radius: var(--radius-lg);">
                     </div>
                     <h1 class="login-title">
                         Welcome to <span class="login-title-highlight">Priority</span>
