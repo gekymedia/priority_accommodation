@@ -155,9 +155,11 @@
             overflow: hidden;
         }
 
-        .sidebar-brand i {
-            font-size: 1.5rem;
-            color: var(--accent);
+        .sidebar-brand img {
+            width: 1.5rem;
+            height: 1.5rem;
+            object-fit: contain;
+            border-radius: var(--radius-sm);
         }
 
         .sidebar.collapsed .sidebar-brand span {
@@ -980,7 +982,7 @@
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <a href="{{ route('admin.dashboard') }}" class="sidebar-brand">
-                    <i class="fas fa-building"></i>
+                    <img src="{{ asset('mobile/psa_accommodations_192x192.png') }}" alt="Priority Accommodations Logo" style="width: 1.5rem; height: 1.5rem; object-fit: contain; border-radius: var(--border-radius-sm);">
                     <span>Priority Accommodations</span>
                 </a>
                 <button class="sidebar-toggle" id="sidebarToggle">
