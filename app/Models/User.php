@@ -18,7 +18,6 @@ class User extends Authenticatable
         "email", 
         "phone", 
         "password", 
-        "role",
         "app_id", // CUG Application ID for SSO
         "address",
         "bio",

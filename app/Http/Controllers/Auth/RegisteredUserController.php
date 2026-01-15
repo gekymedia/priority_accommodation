@@ -49,7 +49,6 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'phone' => $request->phone,
             'password' => Hash::make($request->password),
-            'role' => 'user', // Default role for new users
             // Set Ghana-specific defaults
             'country' => 'ghana',
             'timezone' => 'Africa/Accra',
