@@ -37,15 +37,16 @@
 
                         <!-- Booking Selection -->
                         <div class="form-group">
-                            <label class="form-label">Booking</label>
+                            <label class="form-label">Booking <span class="text-gray-500 text-sm">(Optional)</span></label>
                             <select name="booking_id" class="form-control">
-                                <option value="">Select Booking (Optional)</option>
+                                <option value="">Select Booking (Optional - Not required for cash payments)</option>
                                 @foreach($bookings as $booking)
                                 <option value="{{ $booking->id }}" {{ old('booking_id') == $booking->id ? 'selected' : '' }}>
                                     Room {{ $booking->room->room_number }} - {{ $booking->student->name }}
                                 </option>
                                 @endforeach
                             </select>
+                            <small class="text-gray-500 text-sm">Leave blank if this is a standalone cash payment</small>
                             @error('booking_id')
                             <div class="form-error">{{ $message }}</div>
                             @enderror
@@ -65,7 +66,7 @@
                         <!-- Payment Method -->
                         <div class="form-group">
                             <label class="form-label">Payment Method *</label>
-                            <select name="payment_method" class="form-control" required>
+                            <select name="payment_method" class="form-control" id="payment_method_select" required>
                                 <option value="">Select Payment Method</option>
                                 @foreach($paymentMethods as $value => $label)
                                 <option value="{{ $value }}" {{ old('payment_method') == $value ? 'selected' : '' }}>
@@ -107,11 +108,12 @@
                         <!-- Status -->
                         <div class="form-group">
                             <label class="form-label">Status *</label>
-                            <select name="status" class="form-control" required>
+                            <select name="status" class="form-control" id="payment_status_select" required>
                                 <option value="pending" {{ old('status') == 'pending' ? 'selected' : '' }}>Pending</option>
-                                <option value="completed" {{ old('status') == 'completed' ? 'selected' : '' }}>Completed</option>
+                                <option value="completed" {{ old('status') == 'completed' ? 'selected' : 'selected' }}>Completed</option>
                                 <option value="failed" {{ old('status') == 'failed' ? 'selected' : '' }}>Failed</option>
                             </select>
+                            <small class="text-gray-500 text-sm">For cash payments, typically mark as "Completed"</small>
                             @error('status')
                             <div class="form-error">{{ $message }}</div>
                             @enderror
@@ -119,10 +121,11 @@
 
                         <!-- Transaction ID -->
                         <div class="form-group">
-                            <label class="form-label">Transaction ID</label>
+                            <label class="form-label">Transaction ID <span class="text-gray-500 text-sm">(Optional)</span></label>
                             <input type="text" name="transaction_id" class="form-control" 
                                    value="{{ old('transaction_id') }}" 
-                                   placeholder="Enter transaction ID (if any)">
+                                   placeholder="Enter transaction ID (not required for cash payments)">
+                            <small class="text-gray-500 text-sm">Only needed for bank transfers, card payments, etc.</small>
                             @error('transaction_id')
                             <div class="form-error">{{ $message }}</div>
                             @enderror
@@ -214,5 +217,22 @@
     .gap-6 { gap: 1.5rem; }
     .max-w-4xl { max-width: 56rem; }
     .mx-auto { margin-left: auto; margin-right: auto; }
+    .text-sm { font-size: 0.875rem; }
 </style>
+
+<script>
+    // Auto-set status to "completed" when cash is selected
+    document.addEventListener('DOMContentLoaded', function() {
+        const paymentMethodSelect = document.getElementById('payment_method_select');
+        const statusSelect = document.getElementById('payment_status_select');
+        
+        if (paymentMethodSelect && statusSelect) {
+            paymentMethodSelect.addEventListener('change', function() {
+                if (this.value === 'cash' && statusSelect.value === 'pending') {
+                    statusSelect.value = 'completed';
+                }
+            });
+        }
+    });
+</script>
 @endsection

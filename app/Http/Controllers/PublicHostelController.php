@@ -48,10 +48,10 @@ class PublicHostelController extends Controller
         if ($request->filled('min_price') || $request->filled('max_price')) {
             $query->whereHas('rooms', function ($q) use ($request) {
                 if ($request->filled('min_price')) {
-                    $q->where('price_per_semester', '>=', $request->min_price);
+                    $q->where('price_per_academic_year', '>=', $request->min_price);
                 }
                 if ($request->filled('max_price')) {
-                    $q->where('price_per_semester', '<=', $request->max_price);
+                    $q->where('price_per_academic_year', '<=', $request->max_price);
                 }
             });
         }
@@ -60,10 +60,10 @@ class PublicHostelController extends Controller
         $sortBy = $request->get('sort', 'distance');
         switch ($sortBy) {
             case 'price_low':
-                $query->orderByRaw('(SELECT MIN(price_per_semester) FROM rooms WHERE rooms.hostel_id = hostels.id AND rooms.status = "available") ASC');
+                $query->orderByRaw('(SELECT MIN(price_per_academic_year) FROM rooms WHERE rooms.hostel_id = hostels.id AND rooms.status = "available") ASC');
                 break;
             case 'price_high':
-                $query->orderByRaw('(SELECT MIN(price_per_semester) FROM rooms WHERE rooms.hostel_id = hostels.id AND rooms.status = "available") DESC');
+                $query->orderByRaw('(SELECT MIN(price_per_academic_year) FROM rooms WHERE rooms.hostel_id = hostels.id AND rooms.status = "available") DESC');
                 break;
             case 'name':
                 $query->orderBy('name');
@@ -93,7 +93,7 @@ class PublicHostelController extends Controller
         $hostel->load(['rooms' => function ($q) {
             $q->where('status', Room::STATUS_AVAILABLE)
               ->where('available', true)
-              ->orderBy('price_per_semester');
+              ->orderBy('price_per_academic_year');
         }]);
 
         return view('public.hostels.show', [

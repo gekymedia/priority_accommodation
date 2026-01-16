@@ -49,7 +49,7 @@ class ProfileController extends Controller
 
         $user->update($validated);
 
-        return redirect()->route('profile.edit')->with('success', 'Profile information updated successfully.');
+        return redirect()->route('admin.profile.edit')->with('success', 'Profile information updated successfully.');
     }
 
     public function updatePreferences(Request $request)
@@ -67,7 +67,7 @@ class ProfileController extends Controller
 
         $user->update($validated);
 
-        return redirect()->route('profile.edit')->with('success', 'Account preferences updated successfully.');
+        return redirect()->route('admin.profile.edit')->with('success', 'Account preferences updated successfully.');
     }
 
     public function updatePassword(Request $request)
@@ -82,7 +82,7 @@ class ProfileController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return redirect()->route('profile.edit')->with('success', 'Password updated successfully.');
+        return redirect()->route('admin.profile.edit')->with('success', 'Password updated successfully.');
     }
 
     public function updateNotifications(Request $request)
@@ -102,7 +102,7 @@ class ProfileController extends Controller
 
         $user->update($validated);
 
-        return redirect()->route('profile.edit')->with('success', 'Notification preferences updated successfully.');
+        return redirect()->route('admin.profile.edit')->with('success', 'Notification preferences updated successfully.');
     }
 
     public function destroy(Request $request)

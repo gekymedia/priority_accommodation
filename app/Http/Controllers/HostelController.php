@@ -91,7 +91,7 @@ class HostelController extends Controller
 
         Hostel::create($validated);
 
-        return redirect()->route('hostels.index')
+        return redirect()->route('admin.hostels.index')
             ->with('success', 'Hostel created successfully.');
     }
 
@@ -178,7 +178,7 @@ class HostelController extends Controller
 
         $hostel->update($validated);
 
-        return redirect()->route('hostels.show', $hostel)
+        return redirect()->route('admin.hostels.show', $hostel)
             ->with('success', 'Hostel updated successfully.');
     }
 
@@ -202,7 +202,7 @@ class HostelController extends Controller
 
         $hostel->delete();
 
-        return redirect()->route('hostels.index')
+        return redirect()->route('admin.hostels.index')
             ->with('success', 'Hostel deleted successfully.');
     }
 

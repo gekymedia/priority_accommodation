@@ -48,12 +48,12 @@
                                 @foreach($rooms as $room)
                                     <option value="{{ $room->id }}" 
                                             {{ old('room_id', $booking->room_id) == $room->id ? 'selected' : '' }}
-                                            data-price="{{ $room->price_per_semester }}"
+                                            data-price="{{ $room->price_per_academic_year }}"
                                             data-type="{{ $room->type }}"
                                             data-capacity="{{ $room->capacity }}"
                                             data-hostel="{{ $room->hostel->name ?? 'No Hostel' }}">
                                         {{ $room->room_number }} - {{ $room->hostel->name ?? 'No Hostel' }} 
-                                        ({{ ucfirst($room->type) }}, {{ $room->capacity }} person, ₵{{ number_format($room->price_per_semester) }})
+                                        ({{ ucfirst($room->type) }}, {{ $room->capacity }} person, ₵{{ number_format($room->price_per_academic_year) }}/academic year)
                                     </option>
                                 @endforeach
                             </select>
@@ -81,9 +81,9 @@
                                             <span id="roomHostel" class="font-medium ml-2">{{ $booking->room->hostel->name ?? 'No Hostel' }}</span>
                                         </div>
                                         <div>
-                                            <span class="text-gray-600">Price/Semester:</span>
+                                            <span class="text-gray-600">Price/Academic Year:</span>
                                             <span id="roomPrice" class="font-medium ml-2 text-green-600">
-                                                ₵{{ number_format($booking->room->price_per_semester ?? 0) }}
+                                                ₵{{ number_format($booking->room->price_per_academic_year ?? 0) }}
                                             </span>
                                         </div>
                                     </div>

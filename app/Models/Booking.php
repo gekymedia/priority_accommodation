@@ -223,7 +223,18 @@ class Booking extends Model
     {
         if ($this->room && $this->check_in && $this->check_out) {
             $duration = Carbon::parse($this->check_in)->diffInDays(Carbon::parse($this->check_out));
-            return $duration * $this->room->price_per_semester * $this->semesters;
+            // Calculate based on academic year pricing
+            if ($this->room && $this->check_in && $this->check_out) {
+                $checkIn = Carbon::parse($this->check_in);
+                $checkOut = Carbon::parse($this->check_out);
+                $durationInDays = $checkIn->diffInDays($checkOut);
+                $daysInYear = 365;
+                
+                // Calculate proportional price for the duration
+                $academicYearPrice = $this->room->price_per_academic_year ?? 0;
+                return ($academicYearPrice / $daysInYear) * $durationInDays;
+            }
+            return 0;
         }
         return 0;
     }

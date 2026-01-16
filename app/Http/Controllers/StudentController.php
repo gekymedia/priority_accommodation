@@ -115,7 +115,7 @@ class StudentController extends Controller
 
         try {
             $student = Student::create($studentData);
-            return redirect()->route('students.show', $student)
+            return redirect()->route('admin.students.show', $student)
                 ->with('success', 'Student created successfully.');
         } catch (\Exception $e) {
             return back()->with('error', 'Failed to create student: ' . $e->getMessage())
@@ -180,7 +180,7 @@ class StudentController extends Controller
 
         $student->update($updateData);
 
-        return redirect()->route('students.show', $student)
+        return redirect()->route('admin.students.show', $student)
             ->with('success', 'Student updated successfully.');
     }
 
@@ -193,7 +193,7 @@ class StudentController extends Controller
 
         $student->delete();
 
-        return redirect()->route('students.index')
+        return redirect()->route('admin.students.index')
             ->with('success', 'Student deleted successfully.');
     }
 

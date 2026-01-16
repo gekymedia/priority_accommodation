@@ -69,7 +69,7 @@ class RoomController extends Controller
             'room_number' => 'required|max:10',
             'type' => 'required|in:single,double,suite',
             'capacity' => 'required|integer|min:1|max:6',
-            'price_per_semester' => 'required|numeric|min:0',
+            'price_per_academic_year' => 'required|numeric|min:0',
             'description' => 'nullable|string|max:500',
             'status' => 'required|in:available,occupied,maintenance',
             'available' => 'required|boolean',
@@ -100,7 +100,7 @@ class RoomController extends Controller
 
         Room::create($validated);
 
-        return redirect()->route('rooms.index')
+        return redirect()->route('admin.rooms.index')
             ->with('success', 'Room created successfully.');
     }
 
@@ -127,7 +127,7 @@ class RoomController extends Controller
             'room_number' => 'required|max:10',
             'type' => 'required|in:single,double,suite',
             'capacity' => 'required|integer|min:1|max:6',
-            'price_per_semester' => 'required|numeric|min:0',
+            'price_per_academic_year' => 'required|numeric|min:0',
             'description' => 'nullable|string|max:500',
             'status' => 'required|in:available,occupied,maintenance',
             'video_url' => 'nullable|url',
@@ -179,7 +179,7 @@ class RoomController extends Controller
 
         $room->update($validated);
 
-        return redirect()->route('rooms.show', $room)
+        return redirect()->route('admin.rooms.show', $room)
             ->with('success', 'Room updated successfully.');
     }
 
@@ -200,7 +200,7 @@ class RoomController extends Controller
 
         $room->delete();
 
-        return redirect()->route('rooms.index')
+        return redirect()->route('admin.rooms.index')
             ->with('success', 'Room deleted successfully.');
     }
 

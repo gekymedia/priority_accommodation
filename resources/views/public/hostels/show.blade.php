@@ -700,7 +700,7 @@
                             </div>
                             <div class="room-booking">
                                 <div class="room-price">
-                                    ₵{{ number_format($room->price_per_semester) }} <span>/semester</span>
+                                    ₵{{ number_format($room->price_per_academic_year) }} <span>/academic year</span>
                                 </div>
                                 <div class="room-availability {{ $room->beds_available > 1 ? 'available' : ($room->beds_available === 1 ? 'limited' : 'full') }}">
                                     @if($room->beds_available > 1)
@@ -732,8 +732,8 @@
             <div class="booking-card">
                 <div class="booking-price">
                     <div class="from">Starting from</div>
-                    <div class="price">₵{{ number_format($hostel->rooms->min('price_per_semester') ?? 0) }}</div>
-                    <div class="period">per semester</div>
+                    <div class="price">₵{{ number_format($hostel->rooms->min('price_per_academic_year') ?? 0) }}</div>
+                    <div class="period">per academic year</div>
                 </div>
                 <div class="booking-stats">
                     <div class="booking-stat">

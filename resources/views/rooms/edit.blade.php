@@ -80,13 +80,13 @@
                     @enderror
                 </div>
 
-                <!-- Price per Semester -->
+                <!-- Price per Academic Year -->
                 <div class="form-group">
-                    <label for="price_per_semester" class="form-label">Price per Semester (₵) *</label>
-                    <input type="number" name="price_per_semester" id="price_per_semester" 
-                           value="{{ old('price_per_semester', $room->price_per_semester) }}" 
+                    <label for="price_per_academic_year" class="form-label">Price per Academic Year (₵) *</label>
+                    <input type="number" name="price_per_academic_year" id="price_per_academic_year" 
+                           value="{{ old('price_per_academic_year', $room->price_per_academic_year) }}" 
                            class="form-control" step="0.01" min="0" required>
-                    @error('price_per_semester')
+                    @error('price_per_academic_year')
                         <div class="form-error">{{ $message }}</div>
                     @enderror
                 </div>
@@ -207,7 +207,7 @@
                 <strong>Capacity:</strong> {{ $room->capacity }} person(s)
             </div>
             <div>
-                <strong>Price:</strong> ₵{{ number_format($room->price_per_semester, 2) }}
+                <strong>Price:</strong> ₵{{ number_format($room->price_per_academic_year, 2) }} per academic year
             </div>
             <div>
                 <strong>Status:</strong> 

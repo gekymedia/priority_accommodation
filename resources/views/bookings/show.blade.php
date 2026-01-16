@@ -159,8 +159,8 @@
                         </div>
                         <div class="space-y-3">
                             <div>
-                                <label class="info-label">Price per Semester</label>
-                                <div class="info-value text-green-600">₵{{ number_format($booking->room->price_per_semester, 2) }}</div>
+                                <label class="info-label">Price per Academic Year</label>
+                                <div class="info-value text-green-600">₵{{ number_format($booking->room->price_per_academic_year, 2) }}</div>
                             </div>
                             <div>
                                 <label class="info-label">Room Status</label>

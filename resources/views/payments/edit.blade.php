@@ -38,15 +38,16 @@
 
                         <!-- Booking Selection -->
                         <div class="form-group">
-                            <label class="form-label">Booking</label>
+                            <label class="form-label">Booking <span class="text-gray-500 text-sm">(Optional)</span></label>
                             <select name="booking_id" class="form-control">
-                                <option value="">Select Booking (Optional)</option>
+                                <option value="">Select Booking (Optional - Not required for cash payments)</option>
                                 @foreach($bookings as $booking)
                                 <option value="{{ $booking->id }}" {{ old('booking_id', $payment->booking_id) == $booking->id ? 'selected' : '' }}>
                                     Room {{ $booking->room->room_number }} - {{ $booking->student->name }}
                                 </option>
                                 @endforeach
                             </select>
+                            <small class="text-gray-500 text-sm">Leave blank if this is a standalone cash payment</small>
                             @error('booking_id')
                             <div class="form-error">{{ $message }}</div>
                             @enderror
@@ -120,10 +121,11 @@
 
                         <!-- Transaction ID -->
                         <div class="form-group">
-                            <label class="form-label">Transaction ID</label>
+                            <label class="form-label">Transaction ID <span class="text-gray-500 text-sm">(Optional)</span></label>
                             <input type="text" name="transaction_id" class="form-control" 
                                    value="{{ old('transaction_id', $payment->transaction_id) }}" 
-                                   placeholder="Enter transaction ID (if any)">
+                                   placeholder="Enter transaction ID (not required for cash payments)">
+                            <small class="text-gray-500 text-sm">Only needed for bank transfers, card payments, etc.</small>
                             @error('transaction_id')
                             <div class="form-error">{{ $message }}</div>
                             @enderror

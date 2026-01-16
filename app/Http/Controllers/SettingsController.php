@@ -42,7 +42,7 @@ class SettingsController extends Controller
             }
         }
 
-        return redirect()->route('settings')
+        return redirect()->route('admin.settings')
             ->with('success', 'Settings updated successfully.');
     }
 }

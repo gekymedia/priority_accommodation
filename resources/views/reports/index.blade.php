@@ -122,7 +122,7 @@
             <div>
                 <div class="stat-value">₵{{ number_format($averageRoomRate, 2) }}</div>
                 <div class="stat-label">Avg. Room Rate</div>
-                <div class="stat-subtext">Per semester</div>
+                <div class="stat-subtext">Per academic year</div>
             </div>
             <div class="stat-icon purple">
                 <i class="fas fa-chart-line"></i>
@@ -389,7 +389,7 @@
                 <div class="insight-content">
                     <h4 class="insight-title">Pricing Strategy</h4>
                     <p class="insight-description">
-                        Average room rate is ₵{{ number_format($averageRoomRate, 2) }} per semester. 
+                        Average room rate is ₵{{ number_format($averageRoomRate, 2) }} per academic year. 
                         @if($averageRoomRate > 0)
                         Monitor market rates for competitive pricing.
                         @endif

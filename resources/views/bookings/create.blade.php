@@ -43,12 +43,12 @@
                                 @foreach($rooms as $room)
                                     <option value="{{ $room->id }}" 
                                             {{ (old('room_id') == $room->id || ($selectedRoom && $selectedRoom->id == $room->id)) ? 'selected' : '' }}
-                                            data-price="{{ $room->price_per_semester }}"
+                                            data-price="{{ $room->price_per_academic_year }}"
                                             data-type="{{ $room->type }}"
                                             data-capacity="{{ $room->capacity }}"
                                             data-hostel="{{ $room->hostel->name ?? 'No Hostel' }}">
                                         {{ $room->room_number }} - {{ $room->hostel->name ?? 'No Hostel' }} 
-                                        ({{ ucfirst($room->type) }}, {{ $room->capacity }} person, ₵{{ number_format($room->price_per_semester) }})
+                                        ({{ ucfirst($room->type) }}, {{ $room->capacity }} person, ₵{{ number_format($room->price_per_academic_year) }}/academic year)
                                     </option>
                                 @endforeach
                             </select>
@@ -77,7 +77,7 @@
                                             <span id="roomHostel" class="font-medium ml-2"></span>
                                         </div>
                                         <div>
-                                            <span class="text-gray-600">Price/Semester:</span>
+                                            <span class="text-gray-600">Price/Academic Year:</span>
                                             <span id="roomPrice" class="font-medium ml-2 text-green-600"></span>
                                         </div>
                                     </div>
@@ -265,12 +265,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const checkOut = new Date(checkOutInput.value);
         
         if (roomPrice > 0 && checkIn && checkOut && checkOut > checkIn) {
-            // Calculate duration in months (assuming semester-based pricing)
-            const durationMonths = 1; // Default to one semester
+            // Calculate duration in months (assuming academic year-based pricing)
+            const durationMonths = 12; // Default to one academic year
             const totalAmount = roomPrice * durationMonths;
             
             // Update display
-            document.getElementById('duration').textContent = durationMonths + ' semester(s)';
+            document.getElementById('duration').textContent = durationMonths + ' month(s)';
             document.getElementById('roomPriceDisplay').textContent = '₵' + roomPrice.toLocaleString() + ' × ' + durationMonths;
             document.getElementById('totalAmount').textContent = '₵' + totalAmount.toLocaleString();
             

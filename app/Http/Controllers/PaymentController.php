@@ -74,7 +74,7 @@ class PaymentController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'booking_id' => 'required|exists:bookings,id',
+            'booking_id' => 'nullable|exists:bookings,id',
             'student_id' => 'required|exists:students,id',
             'amount' => 'required|numeric|min:0',
             'payment_method' => 'required|in:cash,bank_transfer,upi,card',
@@ -103,7 +103,7 @@ class PaymentController extends Controller
             }
         }
 
-        return redirect()->route('payments.index')
+        return redirect()->route('admin.payments.index')
             ->with('success', 'Payment recorded successfully.');
     }
 
@@ -132,7 +132,7 @@ class PaymentController extends Controller
     public function update(Request $request, Payment $payment)
     {
         $validated = $request->validate([
-            'booking_id' => 'required|exists:bookings,id',
+            'booking_id' => 'nullable|exists:bookings,id',
             'student_id' => 'required|exists:students,id',
             'amount' => 'required|numeric|min:0',
             'payment_method' => 'required|in:cash,bank_transfer,upi,card',
@@ -158,7 +158,7 @@ class PaymentController extends Controller
             }
         }
 
-        return redirect()->route('payments.index')
+        return redirect()->route('admin.payments.index')
             ->with('success', 'Payment updated successfully.');
     }
 
@@ -166,7 +166,7 @@ class PaymentController extends Controller
     {
         $payment->delete();
 
-        return redirect()->route('payments.index')
+        return redirect()->route('admin.payments.index')
             ->with('success', 'Payment deleted successfully.');
     }
 

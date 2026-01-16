@@ -121,7 +121,7 @@ class BookingController extends Controller
             $booking->room->update(['status' => 'occupied']);
         }
 
-        return redirect()->route('bookings.show', $booking)
+        return redirect()->route('admin.bookings.show', $booking)
             ->with('success', 'Booking created successfully.');
     }
 
@@ -224,7 +224,7 @@ class BookingController extends Controller
             }
         }
 
-        return redirect()->route('bookings.show', $booking)
+        return redirect()->route('admin.bookings.show', $booking)
             ->with('success', 'Booking updated successfully.');
     }
 
@@ -245,7 +245,7 @@ class BookingController extends Controller
             }
         }
 
-        return redirect()->route('bookings.index')
+        return redirect()->route('admin.bookings.index')
             ->with('success', 'Booking deleted successfully.');
     }
 

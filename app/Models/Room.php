@@ -24,7 +24,7 @@ class Room extends Model
         'room_number', 
         'type',
         'capacity',
-        'price_per_semester',
+        'price_per_academic_year',
         'description',
         'status',
         'available',
@@ -37,7 +37,7 @@ class Room extends Model
         'available' => 'boolean',
         'photos' => 'array',
         'features' => 'array',
-        'price_per_semester' => 'float'
+        'price_per_academic_year' => 'float'
     ];
 
     public static function getStatuses()
@@ -127,7 +127,7 @@ class Room extends Model
 
     public function getFormattedPriceAttribute()
     {
-        $price = $this->price_per_semester ? (float) $this->price_per_semester : 0.0;
+        $price = $this->price_per_academic_year ? (float) $this->price_per_academic_year : 0.0;
         return '₵' . number_format($price, 2);
     }
 
@@ -140,9 +140,9 @@ class Room extends Model
     }
 
     // Mutator to ensure price is stored as proper decimal
-    public function setPricePerSemesterAttribute($value)
+    public function setPricePerAcademicYearAttribute($value)
     {
-        $this->attributes['price_per_semester'] = is_numeric($value) ? $value : 0;
+        $this->attributes['price_per_academic_year'] = is_numeric($value) ? $value : 0;
     }
 
     /**
@@ -187,7 +187,7 @@ class Room extends Model
      */
     public function calculatePriceWithCommission(?float $commissionPercentage = null): array
     {
-        $basePrice = $this->base_price ?? $this->price_per_semester;
+        $basePrice = $this->base_price ?? $this->price_per_academic_year;
         $commission = $commissionPercentage ?? $this->hostel?->commission_percentage ?? 10;
         $commissionAmount = ($basePrice * $commission) / 100;
         
@@ -205,7 +205,7 @@ class Room extends Model
     public function getPricePerBedAttribute(): float
     {
         $capacity = $this->capacity ?? 1;
-        return round($this->price_per_semester / $capacity, 2);
+        return round($this->price_per_academic_year / $capacity, 2);
     }
 
     /**

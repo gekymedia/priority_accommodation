@@ -121,7 +121,7 @@ class DashboardController extends Controller
                 round((($totalRevenue - $previousPeriodRevenue) / $previousPeriodRevenue) * 100, 2) : 0;
             
             // Average room rate
-            $averageRoomRate = Room::where('status', Room::STATUS_AVAILABLE)->avg('price_per_semester') ?? 0;
+            $averageRoomRate = Room::where('status', Room::STATUS_AVAILABLE)->avg('price_per_academic_year') ?? 0;
             
             // Revenue by type
             $revenueByType = [

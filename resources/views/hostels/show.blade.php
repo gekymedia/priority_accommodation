@@ -207,7 +207,7 @@
                                     <th>Room Number</th>
                                     <th>Type</th>
                                     <th>Capacity</th>
-                                    <th>Price/Semester</th>
+                                    <th>Price/Academic Year</th>
                                     <th>Status</th>
                                     <th>Current Occupant</th>
                                     <th>Actions</th>
@@ -221,7 +221,7 @@
                                         <span class="capitalize">{{ $room->type }}</span>
                                     </td>
                                     <td>{{ $room->capacity }} persons</td>
-                                    <td class="text-green-600 font-medium">₵{{ number_format($room->price_per_semester, 2) }}</td>
+                                    <td class="text-green-600 font-medium">₵{{ number_format($room->price_per_academic_year, 2) }}</td>
                                     <td>
                                         <span class="status-badge status-{{ $room->status }}">
                                             {{ ucfirst($room->status) }}

@@ -639,7 +639,7 @@
                                 <h4>{{ Str::limit($hostel->name, 20) }}</h4>
                                 <p>{{ $hostel->rooms->count() }} rooms available</p>
                                 @if($hostel->rooms->first())
-                                <div class="price">From ₵{{ number_format($hostel->rooms->min('price_per_semester'), 0) }}</div>
+                                <div class="price">From ₵{{ number_format($hostel->rooms->min('price_per_academic_year'), 0) }}</div>
                                 @endif
                             </a>
                             @endforeach

@@ -94,12 +94,12 @@
                                 @enderror
                             </div>
 
-                            <!-- Price per Semester -->
+                            <!-- Price per Academic Year -->
                             <div class="form-group">
-                                <label for="price_per_semester" class="form-label">Price per Semester (₵) <span class="required">*</span></label>
-                                <input type="number" name="price_per_semester" id="price_per_semester" class="form-control" 
-                                       value="{{ old('price_per_semester') }}" placeholder="e.g., 2500" min="0" step="0.01" required>
-                                @error('price_per_semester')
+                                <label for="price_per_academic_year" class="form-label">Price per Academic Year (₵) <span class="required">*</span></label>
+                                <input type="number" name="price_per_academic_year" id="price_per_academic_year" class="form-control" 
+                                       value="{{ old('price_per_academic_year') }}" placeholder="e.g., 5000" min="0" step="0.01" required>
+                                @error('price_per_academic_year')
                                     <div class="form-error">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -252,7 +252,7 @@
                         </h4>
                         <div class="price-summary">
                             <div class="price-row">
-                                <span>Price per Semester:</span>
+                                <span>Price per Academic Year:</span>
                                 <span id="displayPrice">₵0.00</span>
                             </div>
                             <div class="price-row" id="pricePerBedRow" style="display: none;">
@@ -622,7 +622,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Price calculation
-    const priceInput = document.getElementById('price_per_semester');
+    const priceInput = document.getElementById('price_per_academic_year');
     const capacitySelect = document.getElementById('capacity');
     const displayPrice = document.getElementById('displayPrice');
     const displayPricePerBed = document.getElementById('displayPricePerBed');

@@ -183,7 +183,7 @@ class ComplaintController extends Controller
             $complaint->update($validated);
         }
 
-        return redirect()->route('complaints.show', $complaint)
+        return redirect()->route('admin.complaints.show', $complaint)
             ->with('success', 'Complaint updated successfully.');
     }
 
@@ -194,7 +194,7 @@ class ComplaintController extends Controller
     {
         $complaint->delete();
 
-        return redirect()->route('complaints.index')
+        return redirect()->route('admin.complaints.index')
             ->with('success', 'Complaint deleted successfully.');
     }
 

@@ -565,10 +565,10 @@
                             </div>
                             <div class="hostel-price">
                                 @php
-                                    $minPrice = $hostel->rooms->min('price_per_semester');
+                                    $minPrice = $hostel->rooms->min('price_per_academic_year');
                                 @endphp
                                 <div class="price">
-                                    ₵{{ number_format($minPrice ?? 0) }} <span>/semester</span>
+                                    ₵{{ number_format($minPrice ?? 0) }} <span>/academic year</span>
                                 </div>
                                 <a href="{{ route('public.hostels.show', $hostel) }}" class="btn btn-primary btn-sm">
                                     View Details

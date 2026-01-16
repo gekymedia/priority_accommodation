@@ -182,9 +182,9 @@
                                 </div>
                                 <div class="hostel-name">{{ $booking->room->hostel->name ?? 'No Hostel' }}</div>
                                 <div class="room-type capitalize">{{ $booking->room->type }}</div>
-                                @if($booking->room->price_per_semester)
+                                @if($booking->room->price_per_academic_year)
                                 <div class="room-price">
-                                    ₵{{ number_format($booking->room->price_per_semester, 2) }}/semester
+                                    ₵{{ number_format($booking->room->price_per_academic_year, 2) }}/academic year
                                 </div>
                                 @endif
                             </div>

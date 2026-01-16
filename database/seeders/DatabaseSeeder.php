@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
                 'room_number' => '101',
                 'type' => 'single',
                 'capacity' => 1,
-                'price_per_semester' => 1200.00,
+                'price_per_academic_year' => 2400.00,
                 'description' => 'Single room with attached bathroom',
                 'status' => 'available',
                 'features' => ['wifi', 'ac', 'attached_bathroom']
@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
                 'room_number' => '102',
                 'type' => 'single',
                 'capacity' => 1,
-                'price_per_semester' => 1200.00,
+                'price_per_academic_year' => 2400.00,
                 'description' => 'Single room with shared bathroom',
                 'status' => 'occupied',
                 'features' => ['wifi', 'fan']
