@@ -2,54 +2,172 @@
 namespace App\Http\Controllers;
 
 use App\Models\Student;
+use App\Models\User;
 use App\Models\Booking;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class StudentController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Student::with(['currentBooking.room']);
+        // Fetch all users who are not admins
+        $usersQuery = User::whereDoesntHave('roles', function($q) {
+                $q->whereIn('name', ['admin', 'super_admin']);
+            })
+            ->where(function($q) {
+                $q->whereNull('is_admin')->orWhere('is_admin', false);
+            })
+            ->with(['student.currentBooking.room', 'bookings' => function($q) {
+                $q->whereIn('status', ['confirmed', 'checked_in'])->latest()->limit(1);
+            }]);
 
+        // Apply search filter
         if ($request->has('search') && $request->search) {
-            $query->where(function($q) use ($request) {
-                $q->where('name', 'like', "%{$request->search}%")
-                  ->orWhere('email', 'like', "%{$request->search}%")
-                  ->orWhere('phone', 'like', "%{$request->search}%")
-                  ->orWhere('student_id', 'like', "%{$request->search}%");
+            $search = $request->search;
+            $usersQuery->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%")
+                  ->orWhere('phone', 'like', "%{$search}%")
+                  ->orWhere('student_id_number', 'like', "%{$search}%")
+                  ->orWhere('app_id', 'like', "%{$search}%");
             });
         }
 
+        // Get users and map them to student-like structure
+        $users = $usersQuery->latest()->get();
+        
+        // Map users to student-like objects for the view
+        // First, ensure Student records exist for users who don't have them
+        $students = $users->map(function($user) {
+            // Get or create student record for this user
+            $student = $user->student;
+            
+            if (!$student) {
+                // Create or update student record from user data
+                $student = Student::updateOrCreate(
+                    ['email' => $user->email], // Match by email
+                    [
+                        'name' => $user->name,
+                        'phone' => $user->phone ?? '',
+                        'student_id' => $user->student_id_number ?? $user->app_id ?? ('STU' . str_pad($user->id, 6, '0', STR_PAD_LEFT)),
+                        'university' => 'Catholic University of Ghana',
+                        'course' => $user->programme ?? 'N/A',
+                        'year_of_study' => $user->level ? (int) preg_replace('/[^0-9]/', '', $user->level) : 1,
+                        'department' => $user->programme ?? 'N/A',
+                        'status' => 'active',
+                    ]
+                );
+                
+                // Link student to user if there's a user_id field
+                if (Schema::hasColumn('students', 'user_id')) {
+                    $student->update(['user_id' => $user->id]);
+                }
+            } else {
+                // Update student data from user to keep in sync
+                $student->update([
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'phone' => $user->phone ?? $student->phone,
+                ]);
+            }
+            
+            // Load current booking
+            $student->load('currentBooking.room');
+            
+            return $student;
+        });
+
+        // Apply status filter after mapping
         if ($request->has('status') && $request->status) {
             if ($request->status == 'active') {
-                $query->whereHas('currentBooking');
+                $students = $students->filter(function($student) {
+                    return $student->currentBooking !== null;
+                });
             } elseif ($request->status == 'inactive') {
-                $query->whereDoesntHave('currentBooking');
+                $students = $students->filter(function($student) {
+                    return $student->currentBooking === null;
+                });
             }
         }
 
+        // Apply university filter
         if ($request->has('university') && $request->university) {
-            $query->where('university', 'like', "%{$request->university}%");
+            $students = $students->filter(function($student) use ($request) {
+                return stripos($student->university ?? '', $request->university) !== false;
+            });
         }
 
+        // Apply department filter
         if ($request->has('department') && $request->department) {
-            $query->where('department', 'like', "%{$request->department}%");
+            $students = $students->filter(function($student) use ($request) {
+                return stripos($student->department ?? '', $request->department) !== false;
+            });
         }
 
-        $students = $query->latest()->paginate(15);
+        // Paginate manually
+        $page = $request->get('page', 1);
+        $perPage = 15;
+        $total = $students->count();
+        $students = $students->slice(($page - 1) * $perPage, $perPage)->values();
 
-        $totalStudents = Student::count();
-        $activeStudents = Student::has('currentBooking')->count();
-        $inactiveStudents = Student::doesntHave('currentBooking')->count();
+        // Create paginator manually
+        $students = new \Illuminate\Pagination\LengthAwarePaginator(
+            $students,
+            $total,
+            $perPage,
+            $page,
+            ['path' => $request->url(), 'query' => $request->query()]
+        );
 
-        $universities = Student::select('university')
-            ->whereNotNull('university')
+        // Calculate stats
+        $totalStudents = User::whereDoesntHave('roles', function($q) {
+                $q->whereIn('name', ['admin', 'super_admin']);
+            })
+            ->where(function($q) {
+                $q->whereNull('is_admin')->orWhere('is_admin', false);
+            })
+            ->count();
+            
+        $activeStudents = User::whereDoesntHave('roles', function($q) {
+                $q->whereIn('name', ['admin', 'super_admin']);
+            })
+            ->where(function($q) {
+                $q->whereNull('is_admin')->orWhere('is_admin', false);
+            })
+            ->whereHas('bookings', function($q) {
+                $q->whereIn('status', ['confirmed', 'checked_in']);
+            })
+            ->count();
+            
+        $inactiveStudents = $totalStudents - $activeStudents;
+
+        // Get unique universities and departments from users
+        $universities = User::whereDoesntHave('roles', function($q) {
+                $q->whereIn('name', ['admin', 'super_admin']);
+            })
+            ->where(function($q) {
+                $q->whereNull('is_admin')->orWhere('is_admin', false);
+            })
+            ->whereNotNull('programme')
+            ->selectRaw("COALESCE(programme, 'Catholic University of Ghana') as university")
             ->distinct()
-            ->pluck('university');
+            ->pluck('university')
+            ->map(function($item) {
+                return 'Catholic University of Ghana'; // Standardize for now
+            })
+            ->unique()
+            ->values();
 
-        $departments = Student::select('department')
-            ->whereNotNull('department')
+        $departments = User::whereDoesntHave('roles', function($q) {
+                $q->whereIn('name', ['admin', 'super_admin']);
+            })
+            ->where(function($q) {
+                $q->whereNull('is_admin')->orWhere('is_admin', false);
+            })
+            ->whereNotNull('programme')
+            ->select('programme as department')
             ->distinct()
             ->pluck('department');
 
