@@ -1056,6 +1056,12 @@
                                 <span>Audit Logs</span>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.backups.index') }}" class="nav-link {{ request()->routeIs('admin.backups.*') ? 'active' : '' }}">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <span>Backups</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
 

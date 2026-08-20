@@ -56,6 +56,9 @@ Route::get('/booking/{token}/cancelled', function ($token) {
     return redirect()->route('public.hostels.browse')->with('error', 'Payment was cancelled.');
 })->name('public.bookings.payment.cancelled');
 
+Route::get('auth/google/callback', [\App\Http\Controllers\Admin\GoogleAuthController::class, 'callback'])
+    ->name('google-auth.callback.public');
+
 // SSO Login Route (Public - no auth required)
 Route::get('/sso/login', [\App\Http\Controllers\SsoController::class, 'login'])->name('sso.login');
 
@@ -126,6 +129,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('payments', PaymentController::class);
     Route::get('/payments/{payment}/receipt', [PaymentController::class, 'receipt'])->name('payments.receipt');
     Route::post('/payments/{payment}/mark-completed', [PaymentController::class, 'markCompleted'])->name('payments.mark-completed');
+    Route::post('/payments/{payment}/sync', [PaymentController::class, 'sync'])->name('payments.sync');
     
     // Reports Routes
     Route::get('/reports', [ReportsController::class, 'index'])->name('reports');
@@ -137,6 +141,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Settings
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
     Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');
+
+    Route::get('google/start', [\App\Http\Controllers\Admin\GoogleAuthController::class, 'start'])->name('google-auth.start');
+
+    Route::prefix('backups')->name('backups.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\BackupsController::class, 'index'])->name('index');
+        Route::get('/status', [\App\Http\Controllers\Admin\BackupsController::class, 'status'])->name('status');
+    });
 
     // Audit Logs Routes
     Route::resource('audit-logs', AuditLogController::class)->only(['index', 'show']);

@@ -140,7 +140,7 @@ class StudentController extends Controller
                 $q->whereIn('status', ['confirmed', 'checked_in']);
             })
             ->count();
-            
+
         $inactiveStudents = $totalStudents - $activeStudents;
 
         // Get unique universities and departments from users

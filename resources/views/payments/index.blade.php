@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', 'Payments Management - Priority Accommodations')
 
@@ -149,6 +149,7 @@
                         <th>Type & Method</th>
                         <th>Status</th>
                         <th>Payment Date</th>
+                        <th class="text-center">Bank</th>
                         <th class="text-center">Actions</th>
                     </tr>
                 </thead>
@@ -270,6 +271,21 @@
                                     {{ $payment->payment_date->diffForHumans() }}
                                 </div>
                             </div>
+                        </td>
+                        <td class="text-center">
+                            @if($payment->status === 'completed')
+                            <form action="{{ route('admin.payments.sync', $payment) }}" method="POST" class="inline-form" data-sync-form>
+                                @csrf
+                                <button type="submit" class="btn-action btn-view" title="Sync with Priority Bank">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                            </form>
+                            @if($payment->external_transaction_id)
+                            <span class="text-xs text-gray-500 d-block mt-1">Synced</span>
+                            @endif
+                            @else
+                            <span class="text-gray-400">—</span>
+                            @endif
                         </td>
                         <td>
                             <div class="action-buttons">
@@ -1138,5 +1154,12 @@ document.addEventListener('DOMContentLoaded', function() {
 function printReceipt(paymentId) {
     window.open(`/payments/${paymentId}/receipt`, '_blank');
 }
+
+document.querySelectorAll('[data-sync-form]').forEach(function(f) {
+    f.addEventListener('submit', function() {
+        var btn = this.querySelector('button[type="submit"]');
+        if (btn) { btn.disabled = true; var icon = btn.querySelector('i'); if (icon) icon.classList.add('fa-spin'); }
+    });
+});
 </script>
 @endsection

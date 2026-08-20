@@ -36,6 +36,13 @@ class PriorityBankIntegrationService
         }
 
         try {
+            $extId = $payment->external_transaction_id;
+            if (empty($extId)) {
+                $extId = 'priority_accommodation_payment_' . $payment->id;
+                $payment->external_transaction_id = $extId;
+                $payment->saveQuietly();
+            }
+
             $student = $payment->student;
             $booking = $payment->booking;
             $room = $booking?->room;
@@ -93,7 +100,7 @@ class PriorityBankIntegrationService
                 // Push maintenance as expense
                 $result = $this->client->pushExpense(
                     systemId: $this->systemId,
-                    externalTransactionId: 'priority_accommodation_payment_' . $payment->id,
+                    externalTransactionId: $extId,
                     amount: (float) $payment->amount,
                     date: $payment->payment_date?->format('Y-m-d') ?? now()->format('Y-m-d'),
                     channel: $this->mapPaymentMethod($payment->payment_method),
@@ -109,7 +116,7 @@ class PriorityBankIntegrationService
                 
                 $result = $this->client->pushIncome(
                     systemId: $this->systemId,
-                    externalTransactionId: 'priority_accommodation_payment_' . $payment->id,
+                    externalTransactionId: $extId,
                     amount: (float) $payment->amount,
                     date: $payment->payment_date?->format('Y-m-d') ?? now()->format('Y-m-d'),
                     channel: $this->mapPaymentMethod($payment->payment_method),

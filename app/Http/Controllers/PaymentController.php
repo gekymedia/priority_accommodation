@@ -196,4 +196,33 @@ class PaymentController extends Controller
         return redirect()->back()
             ->with('success', 'Payment marked as completed.');
     }
+
+    /**
+     * Sync payment to Priority Bank (initiate transaction via bank API).
+     * Same pattern as priority_agribusiness – sync icon triggers this.
+     */
+    public function sync(Payment $payment)
+    {
+        if ($payment->status !== Payment::STATUS_COMPLETED) {
+            return redirect()->route('admin.payments.index')
+                ->with('error', 'Only completed payments can be synced to Priority Bank.');
+        }
+
+        if (!config('services.priority_bank.api_token')) {
+            return redirect()->route('admin.payments.index')
+                ->with('error', 'Priority Bank sync is not configured (PRIORITY_BANK_API_TOKEN).');
+        }
+
+        try {
+            $integrationService = new PriorityBankIntegrationService();
+            $ok = $integrationService->pushPayment($payment);
+            if ($ok) {
+                return redirect()->back()->with('success', 'Payment synced to Priority Bank successfully.');
+            }
+        } catch (\Exception $e) {
+            \Log::warning('Priority Bank payment sync failed', ['payment_id' => $payment->id, 'error' => $e->getMessage()]);
+        }
+
+        return redirect()->back()->with('error', 'Bank sync failed. Check configuration and try again.');
+    }
 }

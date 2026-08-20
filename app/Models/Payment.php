@@ -36,7 +36,8 @@ class Payment extends Model
         'payment_date',
         'description',
         'transaction_id',
-        'metadata'
+        'metadata',
+        'external_transaction_id',
     ];
 
     protected $casts = [

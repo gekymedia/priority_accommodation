@@ -66,4 +66,23 @@ return [
         'system_bot_user_id' => (int) env('GEKYCHAT_SYSTEM_BOT_USER_ID', 0),
     ],
 
+
+    // Google Drive backups (per-project OAuth — same Google account, separate refresh token)
+    'google' => [
+        'client_id'     => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect'      => env('GOOGLE_REDIRECT_URI'),
+        'refresh_token' => env('GOOGLE_REFRESH_TOKEN'),
+        'scopes' => [
+            'https://www.googleapis.com/auth/drive.file',
+        ],
+        'access_token_cache_key' => env('GOOGLE_ACCESS_TOKEN_CACHE_KEY', 'google_access_token_accommodations'),
+        'drive_backup_folder' => env('GOOGLE_DRIVE_BACKUP_FOLDER', 'Priority Accommodations Backups'),
+        'backups_redirect_route' => env('GOOGLE_BACKUPS_REDIRECT_ROUTE', 'admin.backups.index'),
+        'backups_dashboard_route' => env('GOOGLE_BACKUPS_DASHBOARD_ROUTE', 'admin.dashboard'),
+        'google_auth_route' => env('GOOGLE_AUTH_ROUTE', 'admin.google-auth.start'),
+        'backups_status_route' => env('GOOGLE_BACKUPS_STATUS_ROUTE', 'admin.backups.status'),
+        'backup_paths' => ['public'],
+    ],
+
 ];
